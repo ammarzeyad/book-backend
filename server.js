@@ -2,23 +2,29 @@
 
 const express = require('express');
 const cors = require('cors');
-const getBooksHandler = require('./Module/book')
+// const getBooksHandler = require('./Module/book')
 
 require('dotenv').config();
 
 const server = express();
 server.use(cors());
 const PORT = process.env.PORT;
-
+server.use(express.json());
+const bookModule = require('./Module/book');
+const addBookHandler = bookModule.addBookHandler;
+const getBooksHandler = bookModule.getBooksHandler;
+const deleteBookHandler = bookModule.deleteBookHandler;
 
 server.get('/', homeHandler);
-server.get('/books', getBooksHandler)
+server.get('/getbooks', getBooksHandler)
+server.post('/addBook', addBookHandler);
+server.delete('/deletebook', deleteBookHandler);
 
 function homeHandler(req, res) {
     res.send('all good')
 }
 
-server.listen(PORT, ()=>{
+server.listen(PORT, () => {
     console.log(`Listening on PORT ${PORT}`)
 });
 
